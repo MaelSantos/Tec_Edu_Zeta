@@ -29,21 +29,21 @@ Integração de um agente de IA com técnicas de Learning Analytics para criar u
 - Sincronizar o repositório: "**uv sync**"
 - Criar o arquivo "**.env**" com as chaves VALYU_API_KEY e GOOGLE_API_KEY
 - Navegue até o .venv: "**& api_rest_back\\.venv\Scripts\Activate.ps1**"
-- Execute o fastAPI: "**fastapi dev api_rest_back/routes/route.py**"
+- Execute o fastAPI: "**fastapi dev api_rest_back/api/main.py**"
 - Acesse o **[localhost](http://127.0.0.1:8000)** ou acesse a [documentação](http://127.0.0.1:8000/docs)
 
 
 ## Demonstração
 
 ### Exemplo Terminal 
-![Alt text](assets/img/exemplo1.png "Exemplo de um teste da aplicação rodando no terminal")
+![Alt text](api_rest_back/assets/img/exemplo1.png "Exemplo de um teste da aplicação rodando no terminal")
 
 ### Exemplo Agno OS
-![Alt text](assets/img/exemplo2.png "Exemplo de um teste da aplicação rodando pelo Agno OS")
+![Alt text](api_rest_back/assets/img/exemplo2.png "Exemplo de um teste da aplicação rodando pelo Agno OS")
 
-![Alt text](assets/img/exemplo3.png "Exemplo de um teste da aplicação rodando pelo Agno OS")
+![Alt text](api_rest_back/assets/img/exemplo3.png "Exemplo de um teste da aplicação rodando pelo Agno OS")
 
 ### Possíveis Erros
-![Alt text](assets/img/erro1.png "Exemplo de erro de alta demanda")
+![Alt text](api_rest_back/assets/img/erro1.png "Exemplo de erro de alta demanda")
 
-![Alt text](assets/img/erro2.png "Exemplo de erro de limitação de cota grátis")
+![Alt text](api_rest_back/assets/img/erro2.png "Exemplo de erro de limitação de cota grátis")
