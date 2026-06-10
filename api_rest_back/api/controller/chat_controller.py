@@ -21,7 +21,7 @@ def criar_agente_info(stream_response=True):
             "Use a ferramenta DuckDuckGo para obter dados atualizados."
             "Use a ferramenta Valyu para obter trabalhos acadêmicos confiáveis."
         ),
-        db=SqliteDb(db_file="api_rest_back/database/estude.db"),
+        db=SqliteDb(db_file="./database/estude.db"),
         add_datetime_to_context=True,
         add_history_to_context=True, #mantém o histórico da conversa
         num_history_runs=3,
