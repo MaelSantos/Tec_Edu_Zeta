@@ -1,0 +1,528 @@
+{
+  "actors": [
+    {
+      "id": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "text": "Aluno",
+      "type": "istar.Actor",
+      "x": 254,
+      "y": 202,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "bde3093e-f87e-4f3d-933b-0a17456b3136",
+      "text": "EduZetta",
+      "type": "istar.Actor",
+      "x": 489,
+      "y": 193,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa",
+          "text": "Estudo Personalizado",
+          "type": "istar.Goal",
+          "x": 599,
+          "y": 304,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "bca4ae6a-3866-426a-b8b3-d8219c63deb7",
+          "text": "Interesses",
+          "type": "istar.Resource",
+          "x": 515,
+          "y": 454,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "026ca63e-ed5d-4ee8-9f58-c17955d3ed1b",
+          "text": "Definir Interesses",
+          "type": "istar.Task",
+          "x": 515,
+          "y": 381,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "18451664-2600-4ce9-9681-6d7445fe33ab",
+          "text": "Criar Mascote",
+          "type": "istar.Goal",
+          "x": 665,
+          "y": 383,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "847bbc45-e81c-405d-9463-47068be1cf48",
+          "text": "Tipos Diferentes de Mascotes (raças?)",
+          "type": "istar.Goal",
+          "x": 753,
+          "y": 471,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e21af5e7-245e-4838-beef-04dcafff8a61",
+          "text": "Amigável",
+          "type": "istar.Quality",
+          "x": 489,
+          "y": 561,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "95ffb282-4b14-4121-8b50-448fd5bbe5e0",
+          "text": "Aprendizado Inteligente/Automatizado",
+          "type": "istar.Goal",
+          "x": 752,
+          "y": 215,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13",
+          "text": "Definir a Personalidade do Mascote",
+          "type": "istar.Goal",
+          "x": 643,
+          "y": 473,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4ad07ae6-cb72-4103-ab0e-deb5f8bb0d14",
+          "text": "Gerar Resumos",
+          "type": "istar.Task",
+          "x": 874,
+          "y": 480,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4b587df0-44d4-4ba9-9f80-fc814aac6b3a",
+          "text": "Estruturar Conteúdo",
+          "type": "istar.Task",
+          "x": 976,
+          "y": 481,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0",
+          "text": "Organizar Estudo",
+          "type": "istar.Goal",
+          "x": 1068,
+          "y": 377,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "9b2ff48a-6b2e-4666-8f85-56403154eaf6",
+          "text": "Gerar Exercícios e Revisões",
+          "type": "istar.Task",
+          "x": 1073,
+          "y": 478,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "9e256c2c-1e2a-483f-8fa6-9d8d89e75672",
+          "text": "Analisar Desempenho",
+          "type": "istar.Goal",
+          "x": 995,
+          "y": 289,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0f8fdd7d-067b-4c1f-8390-62a404b643a5",
+          "text": "Simular Emoções ",
+          "type": "istar.Goal",
+          "x": 606,
+          "y": 575,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "35d34ae8-0af7-4860-87c3-d5276e58f38c",
+          "text": "Modificar a Linguagem Utilizada",
+          "type": "istar.Goal",
+          "x": 703,
+          "y": 571,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "92e1b6ae-f1b0-44fd-9d5b-cf44e448bbf8",
+          "text": "Aprender Disciplina",
+          "type": "istar.Goal",
+          "x": 786,
+          "y": 330,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "b642c42e-0687-47da-b900-6628500c6a04",
+          "text": "Gerar Relatórios Periodicamente",
+          "type": "istar.Task",
+          "x": 1149,
+          "y": 285,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5ed08ee0-a515-415e-9f66-e4f5b7333bbe",
+          "text": "Organizar por dificuldade",
+          "type": "istar.Task",
+          "x": 913,
+          "y": 569,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "6de0d5a5-da7b-4bb8-a0aa-b53324bf49c9",
+          "text": "Avançar/Retroceder Conteúdo",
+          "type": "istar.Task",
+          "x": 1011,
+          "y": 570,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "ca181c55-b353-4e1d-bcc8-62226dad6c9b",
+          "text": "Criar Flashcards",
+          "type": "istar.Task",
+          "x": 1179,
+          "y": 480,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "f2ba0468-f1c4-4720-9629-d8e5a4d10a8d",
+          "text": "Criar Mapa Mental",
+          "type": "istar.Task",
+          "x": 1275,
+          "y": 481,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [
+    {
+      "id": "6362d5b5-e45a-4fd6-aa2e-c693afa41beb",
+      "text": "Estudo Personalizado",
+      "type": "istar.Goal",
+      "x": 384,
+      "y": 274,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa"
+    },
+    {
+      "id": "7a4293b3-c42d-4a7e-8dfd-75dc2609a433",
+      "text": "Estudo Amigável",
+      "type": "istar.Quality",
+      "x": 299,
+      "y": 475,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "e21af5e7-245e-4838-beef-04dcafff8a61"
+    },
+    {
+      "id": "4f9487b8-f4ea-48d1-bafc-0185cb675e4a",
+      "text": "Aprender assunto que tem dificuldade",
+      "type": "istar.Goal",
+      "x": 542,
+      "y": 105,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "95ffb282-4b14-4121-8b50-448fd5bbe5e0"
+    },
+    {
+      "id": "092e7e67-7f56-4e4a-82b3-ecbfb29d2fa7",
+      "text": "Interesses do Aluno",
+      "type": "istar.Resource",
+      "x": 352,
+      "y": 382,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "bca4ae6a-3866-426a-b8b3-d8219c63deb7",
+      "target": "8f3fc76e-6892-4b00-8129-6514442483e0"
+    }
+  ],
+  "links": [
+    {
+      "id": "9e81b7af-53c2-4d58-83c2-4cc08cb354b7",
+      "type": "istar.DependencyLink",
+      "source": "092e7e67-7f56-4e4a-82b3-ecbfb29d2fa7",
+      "target": "8f3fc76e-6892-4b00-8129-6514442483e0"
+    },
+    {
+      "id": "b549997f-61be-444c-9cf6-485f92f67a07",
+      "type": "istar.DependencyLink",
+      "source": "bca4ae6a-3866-426a-b8b3-d8219c63deb7",
+      "target": "092e7e67-7f56-4e4a-82b3-ecbfb29d2fa7"
+    },
+    {
+      "id": "23ba41c0-c16d-478b-8934-5e7cf5e4c6ec",
+      "type": "istar.DependencyLink",
+      "source": "4f9487b8-f4ea-48d1-bafc-0185cb675e4a",
+      "target": "95ffb282-4b14-4121-8b50-448fd5bbe5e0"
+    },
+    {
+      "id": "4559f04b-52aa-4072-a288-09aae326cd53",
+      "type": "istar.DependencyLink",
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "4f9487b8-f4ea-48d1-bafc-0185cb675e4a"
+    },
+    {
+      "id": "4afb3085-ca25-42b7-a13b-d582f3089f25",
+      "type": "istar.DependencyLink",
+      "source": "7a4293b3-c42d-4a7e-8dfd-75dc2609a433",
+      "target": "e21af5e7-245e-4838-beef-04dcafff8a61"
+    },
+    {
+      "id": "2fd2f681-ff8d-4f3b-90f5-637eb1bda789",
+      "type": "istar.DependencyLink",
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "7a4293b3-c42d-4a7e-8dfd-75dc2609a433"
+    },
+    {
+      "id": "bcdd0a03-72d7-44e7-a62a-33f8b58b8122",
+      "type": "istar.DependencyLink",
+      "source": "6362d5b5-e45a-4fd6-aa2e-c693afa41beb",
+      "target": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa"
+    },
+    {
+      "id": "d6a4e63c-cc4e-4246-b159-6f7eea8ddf06",
+      "type": "istar.DependencyLink",
+      "source": "8f3fc76e-6892-4b00-8129-6514442483e0",
+      "target": "6362d5b5-e45a-4fd6-aa2e-c693afa41beb"
+    },
+    {
+      "id": "f4e968eb-1165-45f2-a824-a615251d632c",
+      "type": "istar.OrRefinementLink",
+      "source": "026ca63e-ed5d-4ee8-9f58-c17955d3ed1b",
+      "target": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa"
+    },
+    {
+      "id": "9c5e4b8d-2396-4439-aed2-f9a7e6c2ffa7",
+      "type": "istar.NeededByLink",
+      "source": "bca4ae6a-3866-426a-b8b3-d8219c63deb7",
+      "target": "026ca63e-ed5d-4ee8-9f58-c17955d3ed1b"
+    },
+    {
+      "id": "9917414c-c13a-46e4-80c5-53b5e84744ce",
+      "type": "istar.OrRefinementLink",
+      "source": "18451664-2600-4ce9-9681-6d7445fe33ab",
+      "target": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa"
+    },
+    {
+      "id": "7d8b8b9b-1982-4b81-9814-6fb505889df5",
+      "type": "istar.QualificationLink",
+      "source": "e21af5e7-245e-4838-beef-04dcafff8a61",
+      "target": "18451664-2600-4ce9-9681-6d7445fe33ab"
+    },
+    {
+      "id": "06ecf725-faf2-466a-a5e3-988981d24bb0",
+      "type": "istar.OrRefinementLink",
+      "source": "847bbc45-e81c-405d-9463-47068be1cf48",
+      "target": "18451664-2600-4ce9-9681-6d7445fe33ab"
+    },
+    {
+      "id": "aa2279d8-6f2a-4b91-b4e7-ed843c116a48",
+      "type": "istar.ContributionLink",
+      "source": "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13",
+      "target": "e21af5e7-245e-4838-beef-04dcafff8a61",
+      "label": "help"
+    },
+    {
+      "id": "18d35f40-12ae-4693-b8f6-097209f621e6",
+      "type": "istar.OrRefinementLink",
+      "source": "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13",
+      "target": "18451664-2600-4ce9-9681-6d7445fe33ab"
+    },
+    {
+      "id": "8dcc55b5-4673-48bb-8979-946b55bb5bfe",
+      "type": "istar.AndRefinementLink",
+      "source": "0f8fdd7d-067b-4c1f-8390-62a404b643a5",
+      "target": "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13"
+    },
+    {
+      "id": "2eac9866-72e8-4b92-84ab-aa0235ca29fd",
+      "type": "istar.AndRefinementLink",
+      "source": "35d34ae8-0af7-4860-87c3-d5276e58f38c",
+      "target": "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13"
+    },
+    {
+      "id": "d62137e4-6916-4a27-ab35-a6ab90816244",
+      "type": "istar.AndRefinementLink",
+      "source": "1c20ebcd-6980-45e0-94be-e441fcc1cfaa",
+      "target": "95ffb282-4b14-4121-8b50-448fd5bbe5e0"
+    },
+    {
+      "id": "bcf2c4d0-eee1-483f-8e48-ab0623235285",
+      "type": "istar.AndRefinementLink",
+      "source": "92e1b6ae-f1b0-44fd-9d5b-cf44e448bbf8",
+      "target": "95ffb282-4b14-4121-8b50-448fd5bbe5e0"
+    },
+    {
+      "id": "e7ad50df-e7f1-413b-bcbb-62ddb5de4f85",
+      "type": "istar.AndRefinementLink",
+      "source": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0",
+      "target": "92e1b6ae-f1b0-44fd-9d5b-cf44e448bbf8"
+    },
+    {
+      "id": "e42f3a13-0e60-4983-9458-56cf1193ce62",
+      "type": "istar.AndRefinementLink",
+      "source": "9e256c2c-1e2a-483f-8fa6-9d8d89e75672",
+      "target": "95ffb282-4b14-4121-8b50-448fd5bbe5e0"
+    },
+    {
+      "id": "0695dd98-be17-4480-8ebd-b8b24e8b43df",
+      "type": "istar.AndRefinementLink",
+      "source": "b642c42e-0687-47da-b900-6628500c6a04",
+      "target": "9e256c2c-1e2a-483f-8fa6-9d8d89e75672"
+    },
+    {
+      "id": "46a7812e-3c5c-43c6-b469-142ae45fa75a",
+      "type": "istar.AndRefinementLink",
+      "source": "5ed08ee0-a515-415e-9f66-e4f5b7333bbe",
+      "target": "4b587df0-44d4-4ba9-9f80-fc814aac6b3a"
+    },
+    {
+      "id": "131e527e-4f8e-4165-9fc5-fc6aedd81614",
+      "type": "istar.AndRefinementLink",
+      "source": "6de0d5a5-da7b-4bb8-a0aa-b53324bf49c9",
+      "target": "4b587df0-44d4-4ba9-9f80-fc814aac6b3a"
+    },
+    {
+      "id": "2fdf5b15-9f41-435d-ae71-31c3baa0343a",
+      "type": "istar.OrRefinementLink",
+      "source": "4ad07ae6-cb72-4103-ab0e-deb5f8bb0d14",
+      "target": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0"
+    },
+    {
+      "id": "645526f0-22f8-4c65-a087-1ffb8e96e38b",
+      "type": "istar.OrRefinementLink",
+      "source": "4b587df0-44d4-4ba9-9f80-fc814aac6b3a",
+      "target": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0"
+    },
+    {
+      "id": "31de94b4-6293-4269-acba-64e7c4d14cff",
+      "type": "istar.OrRefinementLink",
+      "source": "9b2ff48a-6b2e-4666-8f85-56403154eaf6",
+      "target": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0"
+    },
+    {
+      "id": "a35b7d21-09bf-4d6a-a370-649d93f80772",
+      "type": "istar.OrRefinementLink",
+      "source": "ca181c55-b353-4e1d-bcc8-62226dad6c9b",
+      "target": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0"
+    },
+    {
+      "id": "1089b121-3db1-41fb-a463-a0e2c844ebfa",
+      "type": "istar.OrRefinementLink",
+      "source": "f2ba0468-f1c4-4720-9629-d8e5a4d10a8d",
+      "target": "e6cafd9b-bb4f-46df-96dd-ff79bfac6af0"
+    }
+  ],
+  "display": {
+    "847bbc45-e81c-405d-9463-47068be1cf48": {
+      "width": 107.88748168945312,
+      "height": 52.725006103515625
+    },
+    "95ffb282-4b14-4121-8b50-448fd5bbe5e0": {
+      "width": 104.88748168945312,
+      "height": 44.32499694824219
+    },
+    "df9dac4b-94e4-4fb5-95e2-5f7963ba5e13": {
+      "width": 105.88748168945312,
+      "height": 45.225006103515625
+    },
+    "4ad07ae6-cb72-4103-ab0e-deb5f8bb0d14": {
+      "width": 100.88750267028809,
+      "height": 35.724998474121094
+    },
+    "9b2ff48a-6b2e-4666-8f85-56403154eaf6": {
+      "width": 103.88748168945312,
+      "height": 42.124996185302734
+    },
+    "35d34ae8-0af7-4860-87c3-d5276e58f38c": {
+      "width": 100.88748168945312,
+      "height": 41.625
+    },
+    "92e1b6ae-f1b0-44fd-9d5b-cf44e448bbf8": {
+      "width": 115.88748168945312,
+      "height": 37.625
+    },
+    "b642c42e-0687-47da-b900-6628500c6a04": {
+      "width": 108.38748168945312,
+      "height": 44.32499694824219
+    },
+    "6de0d5a5-da7b-4bb8-a0aa-b53324bf49c9": {
+      "width": 133.38748168945312,
+      "height": 35.32499694824219
+    },
+    "4f9487b8-f4ea-48d1-bafc-0185cb675e4a": {
+      "width": 108.88748168945312,
+      "height": 44.32499694824219
+    },
+    "7d8b8b9b-1982-4b81-9814-6fb505889df5": {
+      "vertices": [
+        {
+          "x": 627,
+          "y": 485
+        }
+      ]
+    },
+    "8f3fc76e-6892-4b00-8129-6514442483e0": {
+      "collapsed": true
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Sat, 20 Jun 2026 19:20:45 GMT",
+  "diagram": {
+    "width": 1557,
+    "height": 849,
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}

@@ -3,20 +3,21 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Importamos o router que criamos
 from routes.chat_route import router as chat_router
+from api.util import constants
 
 app = FastAPI(
-    title="Tutor de Estudos API",
-    description="API para conectar o Front-end ao Agente de IA",
-    version="1.0.0"
+    title=constants.API_TITLE,
+    description=constants.API_DESCRIPTION,
+    version=constants.API_VERSION
 )
 
 # Configuração do CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Mude para a URL do seu front-end em produção
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=constants.CORS_ALLOW_ORIGINS,
+    allow_credentials=constants.CORS_ALLOW_CREDENTIALS,
+    allow_methods=constants.CORS_ALLOW_METHODS,
+    allow_headers=constants.CORS_ALLOW_HEADERS,
 )
 
 # Registramos as rotas no app principal
