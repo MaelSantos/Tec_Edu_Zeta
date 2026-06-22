@@ -4,10 +4,11 @@ from agno.agent import Agent
 from agno.models.google import Gemini
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.valyu import ValyuTools
-from agno.db.sqlite import SqliteDb
+from agno.db import PostgresDb
 from agno.os import AgentOS
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from api.utils import constants
 
 load_dotenv()
 
@@ -16,11 +17,6 @@ def criar_agente_info(stream_response=True):
         id="Estude",
         name="Organizador de Disciplinas",
         role="Assistente para ajudar na organização, estruturação e retenção de conteúdos de uma determinada disciplina",
-        # model=OpenAIChat(id="gpt-4o-mini"),
-        # model=Claude(id="claude-sonnet-4-5"),
-        # model=Claude(id="claude-3-haiku"),
-        # model=Gemini(id="gemini-2.5-pro-exp"),
-        # model=Gemini(id="gemini-2.5-flash"),
         model=Gemini(id="gemini-3-flash-preview"),
         tools=[DuckDuckGoTools(), ValyuTools()],
         instructions=(
@@ -30,7 +26,7 @@ def criar_agente_info(stream_response=True):
             "Use a ferramenta DuckDuckGo para obter dados atualizados."
             "Use a ferramenta Valyu para obter trabalhos acadêmicos confiáveis."
         ),
-        db=SqliteDb(db_file="database/estude.db"),
+        db=PostgresDb(db_url=constants.AGNO_DATABASE_URL),
         add_datetime_to_context=True,
         add_history_to_context=True, #mantém o histórico da conversa
         num_history_runs=3,

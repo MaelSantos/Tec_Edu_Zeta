@@ -2,10 +2,10 @@ from agno.agent import Agent
 from agno.models.google import Gemini
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.valyu import ValyuTools
-from agno.db.sqlite import SqliteDb
+from agno.db import PostgresDb
 from dotenv import load_dotenv
-from api.util import constants
-from api.util import instructions
+from api.utils import constants
+from api.utils import instructions
 
 load_dotenv()
 
@@ -17,7 +17,7 @@ def criar_agente_info(stream_response=True):
         model=Gemini(id=constants.AI_MODEL_ID),
         tools=[DuckDuckGoTools(), ValyuTools()],
         instructions=instructions.AGENT_INSTRUCTIONS,
-        db=SqliteDb(db_file=constants.DATABASE_FILE_PATH),
+        db=PostgresDb(db_url=constants.AGNO_DATABASE_URL),
         add_datetime_to_context=True,
         add_history_to_context=True,
         num_history_runs=3,

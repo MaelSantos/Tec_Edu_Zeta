@@ -9,5 +9,7 @@ dependencies = [
     "fastapi[standard]>=0.135.3",
     "google-genai>=1.71.0",
     "sqlalchemy>=2.0.49",
+    "psycopg[binary]>=3.2",
+    "alembic>=1.12.0",
     "valyu>=2.9.1",
 ]

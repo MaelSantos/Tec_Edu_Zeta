@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Importamos o router que criamos
-from routes.chat_route import router as chat_router
-from api.util import constants
+from api.repositories.database import engine
+from api.models.base import Base
+from api.routers.chat_router import router as chat_router
+from api.utils import constants
 
 app = FastAPI(
     title=constants.API_TITLE,
     description=constants.API_DESCRIPTION,
-    version=constants.API_VERSION
+    version=constants.API_VERSION,
 )
 
 # Configuração do CORS
@@ -23,5 +24,8 @@ app.add_middleware(
 # Registramos as rotas no app principal
 app.include_router(chat_router)
 
+# Cria as tabelas do banco de dados quando o aplicativo iniciar
+Base.metadata.create_all(bind=engine)
+
 # Para rodar o servidor, use o comando no terminal:
-# uvicorn main:app --reload
+# uvicorn api.main:app --reload
