@@ -10,18 +10,14 @@ from api.models.mascote_model import Mascote
 from api.models.interesse_model import Interesse
 from api.models.disciplina_model import Disciplina
 from api.models.desempenho_model import Desempenho
-from api.models.conteudo_model import Conteudo
-from api.models.exercicio_model import Exercicio
-from api.models.questao_model import Questao
-from api.models.revisao_model import Revisao
 from api.schemas.aluno_schema import AlunoCreate
 from api.services.aluno_service import AlunoService
 from api.repositories.interesse_repo import InteresseRepo
 from api.repositories.aluno_repo import AlunoRepo
 from api.repositories.disciplina_repo import DisciplinaRepo
 from api.repositories.desempenho_repo import DesempenhoRepo
-from api.services.chat_service import generate_chat_stream
-from api.utils.enums import TipoDificuldade
+from api.services.chat_service import ChatService
+from api.utils.enums import TipoAcao, TipoDificuldade
 from scripts.init_db import init_db
 
 
@@ -30,10 +26,13 @@ interesse_repo = InteresseRepo()
 disciplina_repo = DisciplinaRepo()
 desempenho_repo = DesempenhoRepo()
 
+chat_service = ChatService()
 
 def stream_print(generator):
-    for chunk in generator:
-        print(chunk, end="", flush=True)
+    print('\n---\n')
+    print(generator.content if hasattr(generator, 'content') else generator, end="", flush=True)
+    # for chunk in generator:
+    #     print(chunk, end="", flush=True)
     print("\n---\n")
 
 
@@ -116,9 +115,24 @@ def main():
         disciplina = ensure_disciplina(disciplina_nome)
 
         # ask tutor (agent) for suggestions
-        full_prompt = prompt_base + "\n\nAluno quer estudar: " + disciplina_nome + ".\nDificuldades: " + topicos + ".\n" + "Por favor, sugira métodos de estudo e opções: resumo, exercícios, revisão, quiz."
+        # full_prompt = prompt_base + "\n\nAluno quer estudar: " + disciplina_nome + ".\nDificuldades: " + topicos + ".\n" + "Por favor, sugira métodos de estudo e opções: resumo, exercícios, revisão, quiz."
         print("\nTutor está preparando sugestões...\n")
-        stream_print(generate_chat_stream(full_prompt))
+        # stream_print(chat_service.generate_chat_stream(full_prompt))
+        
+        prompt = "Por favor, sugira métodos de estudo e opções: resumo, exercícios, revisão, quiz."
+        
+        personalizacao_agente = {
+            "apelido": aluno.apelido,
+            "disciplina": disciplina_nome,
+            "topicos": topicos,
+            "nome_mascote": "Zetinho",
+            "personalidade_mascote": "Alegre e Enthusiasta",
+            "tipo_mascote": "Cachorro",
+            "linguagem_mascote": "Informal e Amigável",
+            "estado_mascote": "Feliz"
+        }
+        
+        stream_print(chat_service.gerar_resposta_chat(prompt, interests, personalizacao_agente))
 
         # action menu
         while True:
@@ -127,18 +141,22 @@ def main():
             escolha = input("Escolha uma ação (número): ").strip()
             if escolha == "1":
                 p = prompt_base + f"\nGere um resumo objetivo sobre {disciplina_nome} focado em: {topicos}."
-                stream_print(generate_chat_stream(p))
+                mode = TipoAcao.RESUMO 
+                stream_print(chat_service.gerar_resposta_chat(p, interests, personalizacao_agente, mode))
             elif escolha == "2":
                 qtd = input("Quantos exercícios deseja gerar? (padrão 3): ").strip() or "3"
+                mode = TipoAcao.EXERCICIO
                 p = prompt_base + f"\nGere {qtd} exercícios práticos sobre {disciplina_nome} relacionados a: {topicos}. Forneça enunciados curtos." 
-                stream_print(generate_chat_stream(p))
+                stream_print(chat_service.gerar_resposta_chat(p, interests, personalizacao_agente, mode))
             elif escolha == "3":
                 p = prompt_base + f"\nGere uma rotina de revisão (spaced repetition) para {disciplina_nome} e tópicos: {topicos}."
-                stream_print(generate_chat_stream(p))
+                mode = TipoAcao.REVISAO
+                stream_print(chat_service.gerar_resposta_chat(p, interests, personalizacao_agente, mode))
             elif escolha == "4":
                 total = int(input("Quantas perguntas no quiz? (padrão 5): ").strip() or "5")
+                mode = TipoAcao.QUIZ
                 p = prompt_base + f"\nCrie um quiz de {total} perguntas sobre {disciplina_nome} e {topicos}." 
-                stream_print(generate_chat_stream(p))
+                stream_print(chat_service.gerar_resposta_chat(p, interests, personalizacao_agente, mode))
                 # record desempenho
                 acertos = int(input(f"Quantas respostas você acertou (0-{total})? ").strip() or "0")
                 tempo = int(input("Quanto tempo (minutos) você gastou no quiz? (apenas número): ").strip() or "0")

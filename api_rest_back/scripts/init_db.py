@@ -26,8 +26,8 @@ from api.models.revisao_model import Revisao
 
 
 def init_db():
-    print("Limpando o banco de dados...")
-    Base.metadata.drop_all(bind=engine)  # Limpa o banco de dados antes de criar as tabelas
+    # print("Limpando o banco de dados...")
+    # Base.metadata.drop_all(bind=engine)  # Limpa o banco de dados antes de criar as tabelas
     """Cria todas as tabelas no banco de dados."""
     print("Criando tabelas no banco de dados...")
     Base.metadata.create_all(bind=engine)
