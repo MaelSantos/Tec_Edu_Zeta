@@ -25,8 +25,8 @@ DATABASE_DRIVER = os.getenv("DATABASE_DRIVER", "postgresql+psycopg")
 DATABASE_HOST = os.getenv("DATABASE_HOST", "localhost")
 DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
 DATABASE_USER = os.getenv("DATABASE_USER", "postgres")
-DATABASE_PASSWORD = quote_plus(os.getenv("DATABASE_PASSWORD", "postgres"))
-DATABASE_NAME = os.getenv("DATABASE_NAME", "eduzetta")
+DATABASE_PASSWORD = quote_plus(os.getenv("DATABASE_PASSWORD", "123")) #postgres
+DATABASE_NAME = os.getenv("DATABASE_NAME", "tec_edu_zetta")
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",

@@ -1,65 +1,58 @@
 from api.utils.exceptions import RepoException
 from abc import ABCMeta
-from api.repositories.database import SessionLocal
+from api.repositories.database import session
 
 class BaseRepo(metaclass=ABCMeta):
 
-    def __init__(self):
-        self.session = SessionLocal()
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        # Rollback if an exception occurred inside the context
-        if exc_type is not None:
-            try:
-                self.session.rollback()
-            except Exception:
-                pass
-        # Always close the session when exiting the context
-        self.close()
-        # Do not suppress exceptions
-        return False
-
     def close(self):
         try:
-            self.session.close()
+            session.close()
         except Exception:
-            pass
+            raise RepoException('Erro ao Finalizar Seção - Contatar ADM')
 
     def create(self, entidade):
         try:
-            self.session.add(entidade)
-            self.session.commit()
-            self.session.refresh(entidade)
+            session.add(entidade)
+            session.commit()
+            session.refresh(entidade)
             return entidade.id
         except Exception:
-            self.session.rollback()
+            session.rollback()
             raise RepoException('Erro ao Salvar - Contatar ADM')
+        # finally:
+        #     self.close()
 
     def update(self):
         try:
-            self.session.commit()
+            session.commit()
         except Exception:
-            self.session.rollback()
+            session.rollback()
             raise RepoException('Erro ao Atualizar - Contatar ADM')
-
+        # finally:
+        #     self.close()
+            
     def remove(self, entidade):
         try:
-            self.session.delete(entidade)
-            self.session.commit()
+            session.delete(entidade)
+            session.commit()
         except Exception:
-            self.session.rollback()
+            session.rollback()
             raise RepoException('Erro ao Remover - Contatar ADM')
+        # finally:
+        #     self.close()
 
     def get_by_id(self, entidade, id):
         try:
-            return self.session.query(entidade).filter(entidade.id == id).first()
+            return session.query(entidade).filter(entidade.id == id).first()
         except Exception:
             raise RepoException('Erro ao Buscar - Contatar ADM')
+        # finally:
+        #     self.close()
 
     def get_all(self, entidade):
         try:
-            return self.session.query(entidade).all()
+            return session.query(entidade).all()
         except Exception:
             raise RepoException('Erro ao Buscar - Contatar ADM')
+        # finally:
+        #     self.close()

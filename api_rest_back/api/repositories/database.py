@@ -15,6 +15,8 @@ SessionLocal = sessionmaker(
     future=True,
 )
 
+session = SessionLocal()
+
 def get_db():
     with SessionLocal() as db:
         yield db
