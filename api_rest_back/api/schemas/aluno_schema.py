@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class AlunoCreate(BaseModel):
     """Schema para criação de um novo Aluno."""
     apelido: str
+    ano_escolar: str
     mascote_id: Optional[int] = None
 
     class Config:
@@ -14,6 +15,7 @@ class AlunoCreate(BaseModel):
 class AlunoUpdate(BaseModel):
     """Schema para atualização de um Aluno."""
     apelido: Optional[str] = None
+    ano_escolar: str
     mascote_id: Optional[int] = None
 
     class Config:
@@ -24,6 +26,7 @@ class AlunoResponse(BaseModel):
     """Schema para resposta de Aluno (serialização)."""
     id: int
     apelido: str
+    ano_escolar: str
     mascote_id: Optional[int] = None
 
     class Config:

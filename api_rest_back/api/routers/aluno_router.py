@@ -11,6 +11,7 @@ from api.schemas.aluno_schema import (
     AlunoWithMascote,
 )
 from api.services.aluno_service import AlunoService
+from api.schemas.interesse_schema import InteresseAlunoCreate
 
 
 router = APIRouter(
@@ -21,7 +22,7 @@ router = APIRouter(
 aluno_service = AlunoService()
 
 
-@router.post("/", response_model=AlunoResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/save", response_model=AlunoResponse, status_code=status.HTTP_201_CREATED)
 async def criar_aluno(aluno_data: AlunoCreate) -> AlunoResponse:
     """Criar um novo aluno."""
     try:
@@ -30,6 +31,21 @@ async def criar_aluno(aluno_data: AlunoCreate) -> AlunoResponse:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Erro ao criar aluno",
+            )
+        return AlunoResponse.model_validate(aluno)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    
+
+@router.post("/interesses/save", response_model=AlunoResponse, status_code=status.HTTP_201_CREATED)
+async def criar_interesse(interesse_aluno: InteresseAlunoCreate) -> AlunoResponse:
+    """Criar um novo interesse."""
+    try:
+        aluno = aluno_service.save_interesses(interesse_aluno)
+        if not aluno:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Erro ao criar interesse",
             )
         return AlunoResponse.model_validate(aluno)
     except Exception as e:
@@ -45,6 +61,7 @@ async def obter_aluno_por_username(username: str) -> AlunoResponse:
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Aluno não encontrado",
         )
+    
     return AlunoResponse.model_validate(aluno)
 
 

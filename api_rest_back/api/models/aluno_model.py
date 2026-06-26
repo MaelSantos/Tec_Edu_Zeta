@@ -23,6 +23,7 @@ class Aluno(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     apelido = Column(String(120), nullable=False)
+    ano_escolar = Column(String(120), nullable=False)
     mascote_id = Column(Integer, ForeignKey("mascotes.id"), nullable=True)
 
     mascote = relationship("Mascote", back_populates="alunos")
