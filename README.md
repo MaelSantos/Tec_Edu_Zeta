@@ -29,7 +29,7 @@ Integração de um agente de IA com técnicas de Learning Analytics para criar u
 - Sincronizar o repositório: "**uv sync**"
 - Criar o arquivo "**.env**" com as chaves VALYU_API_KEY e GOOGLE_API_KEY
 - Navegue até o .venv: "**& api_rest_back\\.venv\Scripts\Activate.ps1**" ou "**.venv\Scripts\activate**"
-- Execute o fastAPI: "**fastapi dev api_rest_back/api/main.py**"
+- Execute o fastAPI: "**python -m fastapi dev api/main.py**"
 - Acesse o **[localhost](http://127.0.0.1:8000)** ou acesse a [documentação](http://127.0.0.1:8000/docs)
 
 

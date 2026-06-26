@@ -1981,9 +1981,13 @@
   </div>
 
   <script>
+    const API_URL = "http://localhost:8000/api/chat/stream";
+    const API_URL_ALUNO = "http://localhost:8000/api/alunos";
+    
     const profileStorageKey = 'nexTutorUserProfile';
     const customizationStorageKey = 'nexTutorOtterCustomization';
     const userProfile = {
+      id : '',
       name: '',
       grade: '',
       interests: []
@@ -2062,14 +2066,62 @@
       document.getElementById('grade-error').textContent = '';
     }
 
-    function nextFromGrade() {
+    async function nextFromGrade() {
       if (!userProfile.grade) {
         document.getElementById('grade-error').textContent = 'Escolha seu ano escolar para continuar.';
         return;
       }
 
-      saveProfile();
-      goTo('onboarding-interesses');
+    name = userProfile.name.trim();
+    try {
+        // 3. Faz a requisição POST para o FastAPI
+        const response = await fetch(API_URL_ALUNO+"/username/"+name, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        });
+
+        console.log(JSON.stringify({ aluno_data: {apelido: name, ano_escolar: userProfile.grade} }));
+
+        if(response.status == 404){
+          console.log("Usuário não encontrado, criando novo usuário:", name);
+          const createResponse = await fetch(API_URL_ALUNO+"/save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({apelido: name, ano_escolar: userProfile.grade})
+          });
+
+          if (!createResponse.ok) throw new Error("Erro ao criar novo usuário na API.");
+
+          saveProfile();
+          goTo('onboarding-interesses');
+
+        } else if (response.status == 200) {
+          console.log("Usuário existente encontrado:", name);
+          const aluno = await response.json();
+
+          console.log(aluno);
+
+          userProfile.id = aluno.id;
+
+          
+
+          saveProfile();
+          goTo('principal');
+
+        } else {
+          throw new Error("Erro inesperado ao verificar usuário na API.");
+        }
+
+      } catch (error) {
+        console.error("Erro:", error);
+      } finally {
+      }
+
+      
     }
 
     function toggleInterest(button) {
@@ -2077,7 +2129,7 @@
       document.getElementById('interest-error').textContent = '';
     }
 
-    function finishOnboarding() {
+    async function finishOnboarding() {
       const selectedInterests = Array.from(document.querySelectorAll('#interest-options .option-btn.active'))
         .map(button => button.dataset.interest);
       const notes = document.getElementById('interest-notes').value
@@ -2090,6 +2142,28 @@
       if (userProfile.interests.length === 0) {
         document.getElementById('interest-error').textContent = 'Escolha ou escreva pelo menos um interesse.';
         return;
+      }
+
+    try {
+      
+      console.log(JSON.stringify({aluno_id: userProfile.id, interesses: userProfile.interests}))
+      const createResponse = await fetch(API_URL_ALUNO+"/interesses/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({aluno_id: userProfile.id, interesses: userProfile.interests})
+      });
+
+      if (!createResponse.ok) {
+          const erro = await createResponse.json();
+          console.error(erro);
+          throw new Error("Erro ao criar novo interesse na API.");
+      }
+
+      } catch (error) {
+        console.error("Erro:", error);
+      } finally {
       }
 
       saveProfile();
