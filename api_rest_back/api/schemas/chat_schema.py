@@ -1,10 +1,19 @@
+from typing import List
+
 from pydantic import BaseModel
 
 from api.schemas.exercicio_schema import ExercicioResponse
+from api.utils.enums import TipoAcao
 
 class ChatRequest(BaseModel):
     prompt: str
-
+    
+class ChatRequestPersonalizado(BaseModel):
+    message: str
+    interesses_list: List[str]
+    apelido: str
+    disciplina: str
+    mode: TipoAcao
 
 class ChatResponse(BaseModel):
     response: str

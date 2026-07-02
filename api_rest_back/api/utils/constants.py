@@ -15,7 +15,8 @@ CORS_ALLOW_METHODS = ["*"]
 CORS_ALLOW_HEADERS = ["*"]
 
 # ===== Configurações do Modelo de IA =====
-AI_MODEL_ID = "gemini-3-flash-preview"
+AI_MODEL_ID = "gemini-3-flash-preview" # Modelo LLM do Google Gemini
+# AI_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"  # Modelo LLM da NVIDIA
 
 # ===== Configurações do Banco de Dados =====
 import os

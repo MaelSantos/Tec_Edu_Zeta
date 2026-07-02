@@ -4,10 +4,12 @@ from typing import List
 from agno.run import RunContext
 from agno.agent import Agent
 from agno.models.google import Gemini
+from agno.models.nvidia import Nvidia
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.valyu import ValyuTools
 from agno.db import PostgresDb
 from dotenv import load_dotenv
+from fastapi import HTTPException, status
 from api.utils import constants
 from api.utils import instructions
 from api.schemas.chat_schema import AvaliacaoResponse, QuizResponse, ResumoResponse, RevisaoResponse
@@ -44,6 +46,7 @@ class ChatService:
             name=instructions.AGENT_NAME,
             role=instructions.AGENT_ROLE,
             model=Gemini(id=constants.AI_MODEL_ID),
+            # model=Nvidia(id=constants.AI_MODEL_ID),
             tools=[DuckDuckGoTools(), ValyuTools()],
             instructions=instructions.AGENT_INSTRUCTIONS,
             db=PostgresDb(db_url=constants.AGNO_DATABASE_URL),
@@ -66,11 +69,16 @@ class ChatService:
         apelido = personalizacao_agente.get("apelido", "Aluno")
         disciplina_aluno = personalizacao_agente.get("disciplina", "")
         topicos = personalizacao_agente.get("topicos", "")
-        nome_mascote = personalizacao_agente.get("nome_mascote", "Zetinho")
-        personalidade_mascote = personalizacao_agente.get("personalidade_mascote", "Alegre e Enthusiasta")
-        tipo_mascote = personalizacao_agente.get("tipo_mascote", "Cachorro")
-        linguagem_mascote = personalizacao_agente.get("linguagem_mascote", "Informal e Amigável")
-        estado_mascote = personalizacao_agente.get("estado_mascote", "Feliz")
+        # nome_mascote = personalizacao_agente.get("nome_mascote", "Zetinho")
+        # personalidade_mascote = personalizacao_agente.get("personalidade_mascote", "Alegre e Enthusiasta")
+        # tipo_mascote = personalizacao_agente.get("tipo_mascote", "Capivara")
+        # linguagem_mascote = personalizacao_agente.get("linguagem_mascote", "Informal e Amigável")
+        # estado_mascote = personalizacao_agente.get("estado_mascote", "Feliz")
+        nome_mascote = "Nex"
+        personalidade_mascote = "Alegre e Enthusiasta"
+        tipo_mascote = "Capivara"
+        linguagem_mascote = "Informal e Amigável"
+        estado_mascote = "Feliz"
         
         contexto_agente = instructions.gerar_contexto_agente(
             interesses_list, apelido, disciplina_aluno, topicos, nome_mascote, personalidade_mascote, tipo_mascote, linguagem_mascote, estado_mascote
@@ -87,11 +95,35 @@ class ChatService:
             
         # run_context = RunContext(dependencies=personalizacao_agente)
 
-        response_stream = self.tutor_agent.run(f"{contexto_agente}\n\nSolicitação do aluno:{message}", stream=False)
+        response_stream = None
+        try:
+            response_stream = self.tutor_agent.run(f"{contexto_agente}\n\nSolicitação do aluno:{message}", stream=False)
+        except Exception as e:
+            print(f"Erro ao gerar resposta do Agno: {str(e)}")  # Log do erro para depuração
+            error_message = str(e)
+            error_lower = error_message.lower()
+            if "high demand" in error_lower or "503" in error_lower or "unavailable" in error_lower:
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="O serviço de IA está temporariamente indisponível devido à alta demanda. Tente novamente mais tarde."
+                )
+            if "quota" in error_lower or "credit" in error_lower or "tokens" in error_lower:
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Não foi possível gerar a resposta porque os créditos/tokens acabaram. Tente novamente mais tarde."
+                )
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Erro interno no serviço de IA. Por favor, tente novamente mais tarde."
+            )
 
-        return response_stream
-        # for chunk in response_stream:
-        #     if hasattr(chunk, 'content') and chunk.content:
-        #         yield chunk.content
-        #     elif isinstance(chunk, str):
-        #         yield chunk
+        print(f"Resposta do Agno (raw): {response_stream}")  # Log da resposta bruta do Agno para depuração
+
+        # Se o objeto retornado tem atributo content
+        if hasattr(response_stream, "content"):
+            content = response_stream.content
+        else:
+            content = response_stream
+
+        print(f"Resposta do Agno: {content}")  # Log da resposta do Agno para depuração
+        return content
