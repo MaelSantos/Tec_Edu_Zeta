@@ -15,8 +15,11 @@ CORS_ALLOW_METHODS = ["*"]
 CORS_ALLOW_HEADERS = ["*"]
 
 # ===== Configurações do Modelo de IA =====
-AI_MODEL_ID = "gemini-3-flash-preview" # Modelo LLM do Google Gemini
+# AI_MODEL_ID = "gemini-2.0-flash-lite" # Modelo LLM do Google Gemini (cota gratuita maior)
+# AI_MODEL_ID = "gemini-2.0-flash" # Modelo LLM do Google Gemini (mais estável)
+# AI_MODEL_ID = "gemini-2.5-flash"  # Alternativa mais recente
 # AI_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"  # Modelo LLM da NVIDIA
+AI_MODEL_ID = "llama3.1:8b"  # Modelo LLM local via Ollama (bom suporte a function calling e structured output)
 
 # ===== Configurações do Banco de Dados =====
 import os
