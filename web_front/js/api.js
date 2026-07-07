@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8001/api";
+const API_BASE = "http://localhost:8000/api";
 const API_URL_CHAT = API_BASE + "/chat";
 const API_URL_ALUNO = API_BASE + "/alunos";
 

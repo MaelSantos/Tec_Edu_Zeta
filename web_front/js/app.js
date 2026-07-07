@@ -162,7 +162,7 @@ function applyProfile() {
     ? ` Vou trazer exemplos com ${userProfile.interests.slice(0, 3).join(', ')}.`
     : '';
 
-  welcomeTitle.textContent = `Oi, ${userProfile.name}!`;
+  welcomeTitle.textContent = `Oi, ${userProfile.name.toLocaleUpperCase()}!`;
   welcomeSubtitle.textContent = `${userProfile.grade ? userProfile.grade + ' - ' : ''}pronto para evoluir hoje?${interestsText}`;
 }
 
