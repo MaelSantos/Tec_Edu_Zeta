@@ -5,7 +5,7 @@ from api.repositories.aluno_repo import AlunoRepo
 from api.schemas.aluno_schema import AlunoCreate, AlunoUpdate
 from api.models.interesse_model import Interesse
 from api.repositories.interesse_repo import InteresseRepo
-from api_rest_back.api.schemas.interesse_schema import InteresseAlunoCreate
+from api.schemas.interesse_schema import InteresseAlunoCreate
 
 
 class AlunoService:

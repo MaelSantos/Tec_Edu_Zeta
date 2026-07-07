@@ -12,4 +12,5 @@ dependencies = [
     "psycopg[binary]>=3.2",
     "alembic>=1.12.0",
     "valyu>=2.9.1",
+    "ollama>=0.6.2",
 ]

@@ -1,8 +1,7 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
-from api.schemas.exercicio_schema import ExercicioResponse
 from api.utils.enums import TipoAcao
 
 class ChatRequest(BaseModel):
@@ -14,6 +13,12 @@ class ChatRequestPersonalizado(BaseModel):
     apelido: str
     disciplina: str
     mode: TipoAcao
+    topicos: str = ""
+    nome_mascote: str = ""
+    personalidade_mascote: str = ""
+    tipo_mascote: str = ""
+    linguagem_mascote: str = ""
+    estado_mascote: str = ""
 
 class ChatResponse(BaseModel):
     response: str
@@ -22,21 +27,65 @@ class ChatResponse(BaseModel):
         from_attributes = True
 
 
-# melhorar...
+class VisualContent(BaseModel):
+    mindmap: Optional[str] = None
+    flashcards: Optional[List[dict]] = None
+    chart: Optional[dict] = None
+    mermaid: Optional[str] = None
+
+
 class ResumoResponse(BaseModel):
-    tipo: str
+    tipo: str = "resumo"
     titulo: str
     resumo: str
+    sugestoes: list[str]
+    visual: Optional[VisualContent] = None
+
+
+class Alternativa(BaseModel):
+    letra: str
+    texto: str
+
+
+class QuestaoExercicio(BaseModel):
+    pergunta: str
+    alternativas: list[Alternativa]
+    resposta_correta: str
+
 
 class AvaliacaoResponse(BaseModel):
-    tipo: str
+    tipo: str = "exercicio"
     titulo: str
-    exercicios: list[ExercicioResponse]
+    questoes: list[QuestaoExercicio]
+    sugestoes: list[str]
+    visual: Optional[VisualContent] = None
+
+
+class QuestaoQuiz(BaseModel):
+    pergunta: str
+    alternativas: list[str]
+    resposta: Optional[str] = None
+
 
 class QuizResponse(BaseModel):
-    tipo: str
-    perguntas: list
+    tipo: str = "quiz"
+    titulo: str
+    perguntas: list[QuestaoQuiz]
+    sugestoes: list[str]
+    visual: Optional[VisualContent] = None
+
+
+class ItemCronograma(BaseModel):
+    dia: str
+    assunto: str
+    descricao: Optional[str] = None
+
 
 class RevisaoResponse(BaseModel):
-    tipo: str
-    cronograma: list
+    tipo: str = "revisao"
+    titulo: str
+    cronograma: list[ItemCronograma]
+    sugestoes: list[str]
+    visual: Optional[VisualContent] = None
+    
+    
