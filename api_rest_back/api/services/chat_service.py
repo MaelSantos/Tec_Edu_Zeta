@@ -9,6 +9,10 @@ from bs4 import BeautifulSoup
 
 from agno.agent import Agent
 from agno.models.ollama import Ollama
+from agno.db.postgres import PostgresDb
+from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.tools.wikipedia import WikipediaTools
+from agno.tools.valyu import ValyuTools
 from dotenv import load_dotenv
 from fastapi import HTTPException, status
 
@@ -20,7 +24,7 @@ from api.schemas.chat_schema import (
 )
 from api.utils import constants
 from api.utils.enums import TipoAcao
-from api.utils.instructions import gerar_contexto_agente
+from api.utils.instructions import AGENT_INSTRUCTIONS, gerar_contexto_agente
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +36,32 @@ MODE_SCHEMAS = {
     "Exercício": AvaliacaoResponse,
     "Revisão": RevisaoResponse,
     "Quiz": QuizResponse,
+}
+
+NUM_PREDICT_POR_MODO = {
+    "Resumo": 512,
+    "Exercício": 900,
+    "Quiz": 900,
+    "Revisão": 700,
+}
+
+VISUAL_POR_MODO = {
+    "Resumo": (
+    "No campo 'visual', inclua sempre um mapa mental no campo 'mindmap' "
+    "(markdown com # headings), resumindo os pontos principais do assunto."
+    ),
+    "Exercício": (
+    "No campo 'visual', deixe todos os subcampos como null. "
+    "As proprias questoes com alternativas ja cumprem o papel de conteudo estruturado."
+    ),
+    "Revisão": (
+    "No campo 'visual', inclua sempre flashcards no campo 'flashcards' "
+    "(lista de pares pergunta/resposta), um para cada item do cronograma."
+    ),
+    "Quiz": (
+    "No campo 'visual', deixe todos os subcampos como null. "
+    "As proprias perguntas do quiz ja cumprem o papel de conteudo estruturado."
+    ),
 }
 
 import re as _re
@@ -433,6 +463,7 @@ class ChatService:
         self.model_id = constants.AI_MODEL_ID
         self._agente_classificador: Agent = None
         self._agentes_formatacao: dict[str, Agent] = {}
+        self._executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
         self._init_agentes()
 
     def _init_agentes(self):
@@ -489,9 +520,11 @@ class ChatService:
             markdown=False,
             debug_mode=False,
             telemetry=False,
+            stream=False,
         )
 
         for modo, schema in MODE_SCHEMAS.items():
+
             descricao = _gerar_descricao_schema(schema)
 
             exemplo_sugestoes = {
@@ -526,10 +559,9 @@ class ChatService:
             }.get(modo, "")
 
             instrucoes_sugestoes = (
-                "No campo 'sugestoes', gere exatamente 3 perguntas CURTAS (max 12 palavras cada) "
+                "No campo 'sugestoes', gere exatamente 3 perguntas CURTAS (max 10 palavras cada) "
                 "que o ALUNO pode fazer ao tutor como continuacao do assunto. "
-                "Cada sugestao deve ser uma pergunta direta que comeca com "
-                "'O que', 'Como', 'Qual', 'Pode', 'Por que' ou similar. "
+                "Cada sugestao deve comecar com 'O que', 'Como', 'Qual', 'Pode' ou 'Por que'. "
                 "IMPORTANTE: As sugestoes sao perguntas que o ALUNO faz ao TUTOR, "
                 "NUNCA perguntas que o tutor faz ao aluno.\n"
                 f"{exemplo_sugestoes}"
@@ -538,40 +570,43 @@ class ChatService:
             instrucoes_format = (
                 f"*Modo: {modo}*\n"
                 "Transforme o texto abaixo em JSON valido seguindo exatamente este schema:\n"
-                f"{descricao}\n"
-                f"{instrucoes_sugestoes}\n"
+                f"{descricao}\n\n"
+                f"{instrucoes_sugestoes}\n\n"
                 "Regras importantes:\n"
-                "- No campo 'resumo', escreva uma explicacao DETALHADA e COMPLETA com 3 a 5 paragrafos.\n"
-                "- No campo 'visual', SEMPRE inclua pelo menos um tipo de conteudo visual "
-                "(mindmap, flashcards, chart ou mermaid) sempre que possivel. "
-                "Se nao conseguir gerar conteudo visual relevante, deixe como null.\n"
-                "- Se for usar mermaid, use sintaxe VALIDA com grafos conectados. "
-                "Exemplo correto:\n"
+                "- No campo do conteudo principal, escreva uma explicacao clara em 2 a 3 paragrafos.\n"
+                f"- {VISUAL_POR_MODO.get(modo, "Deixe o campo 'visual' como null.")}\n"
+                "- Se for usar mermaid, use sintaxe VALIDA com grafos conectados. Exemplo correto:\n"
                 "  graph TD\n"
                 "    A[\"Titulo\"]\n"
                 "    A --> B[\"Subtopic 1\"]\n"
                 "    A --> C[\"Subtopic 2\"]\n"
                 "    B --> D[\"Detail\"]\n"
-                "Cada no deve ter um ID unico (A, B, C...) e pelo menos uma conexao (-->). "
+                "  Cada no deve ter um ID unico (A, B, C...) e pelo menos uma conexao (-->). "
                 "Nao use virgulas dentro dos colchetes sem aspas duplas.\n"
                 "Responda APENAS com o JSON, sem texto adicional. "
                 "Nao inclua marcacao ```json. Apenas o JSON puro."
             )
 
+            # print(f"instrucoes_format for {modo}:\n{VISUAL_POR_MODO.get(modo, "Deixe o campo 'visual' como null.")}\n")
+            
             self._agentes_formatacao[modo] = Agent(
                 name=f"EduZetta-{modo}",
                 model=Ollama(
                     id=self.model_id,
-                    options={"temperature": 0.3, "num_predict": 512},
+                    options={"temperature": 0.3, "num_predict": NUM_PREDICT_POR_MODO[modo], "num_ctx": 4096}, #para respostas mais longas, aumentar num_predict
                     timeout=120,
                 ),
-                instructions=instrucoes_format,
+                # model=Gemini(id=constants.AI_MODEL_ID),
+                instructions=AGENT_INSTRUCTIONS + instrucoes_format,
                 output_schema=schema,
                 markdown=False,
                 debug_mode=False,
                 telemetry=False,
                 store_media=False,
                 send_media_to_model=False,
+                # excluir linhas abaixo se ocorrer algum erro de loop infinito ou travamento do modelo
+                db=PostgresDb(db_url=constants.AGNO_DATABASE_URL),
+                stream=False, #desativar streaming para evitar travamentos
             )
 
     def _extrair_timeline(self, response) -> list[dict]:
@@ -770,10 +805,8 @@ class ChatService:
 
         # Classificador: verifica se a pergunta e conteudo escolar
         try:
-            import time as _time
-            pool_cls = concurrent.futures.ThreadPoolExecutor()
+            fut_cls = self._executor.submit(self._agente_classificador.run, message)
             try:
-                fut_cls = pool_cls.submit(self._agente_classificador.run, message)
                 resp_cls = fut_cls.result(timeout=60)
                 texto_cls = str(resp_cls.content or "").strip().upper()
                 if texto_cls == "CRISE":
@@ -827,8 +860,7 @@ class ChatService:
                     }
             except concurrent.futures.TimeoutError:
                 logger.warning("Classificador excedeu tempo limite, prosseguindo com pesquisa")
-            finally:
-                pool_cls.shutdown(wait=False, cancel_futures=True)
+                fut_cls.cancel()
         except Exception as e:
             logger.warning("Erro no classificador: %s, prosseguindo com pesquisa", str(e)[:100])
 
@@ -844,14 +876,14 @@ class ChatService:
             try:
                 logger.info("Pesquisa modo=%s tentativa=%d", modo_label, tentativa)
 
-                with concurrent.futures.ThreadPoolExecutor() as pool:
-                    fut = pool.submit(web_search, prompt_pesquisa)
-                    try:
-                        search_result = fut.result(timeout=30)
-                    except concurrent.futures.TimeoutError:
-                        logger.warning("web_search timeout (tentativa %d)", tentativa+1)
-                        tentativas_log.append({'tentativa': tentativa+1, 'status': 'timeout', 'tempo_seg': round(time_module.time()-inicio_tentativa,2), 'fase': 'busca'})
-                        continue
+                fut = self._executor.submit(web_search, prompt_pesquisa)
+                try:
+                    search_result = fut.result(timeout=30)
+                except concurrent.futures.TimeoutError:
+                    logger.warning("web_search timeout (tentativa %d)", tentativa+1)
+                    fut.cancel()
+                    tentativas_log.append({'tentativa': tentativa+1, 'status': 'timeout', 'tempo_seg': round(time_module.time()-inicio_tentativa,2), 'fase': 'busca'})
+                    continue
 
                 fonte_busca = search_result.get("source", "DuckDuckGo") if isinstance(search_result, dict) else "DuckDuckGo"
                 timeline.append({'tipo': 'busca', 'consulta': prompt_pesquisa, 'previa': prompt_pesquisa[:200], 'status': 'ok', 'fonte': fonte_busca, 'duracao_seg': round(time_module.time() - inicio_tentativa, 2)})
@@ -880,15 +912,15 @@ class ChatService:
                 logger.info("Formata\u00e7\u00e3o modo=%s tentativa=%d", modo_label, tentativa)
                 timeline.append({'tipo': 'formatacao', 'modo': modo_label, 'tentativa': tentativa+1})
 
-                with concurrent.futures.ThreadPoolExecutor() as pool:
-                    prompt_format = f"{contexto_personalizado}\n\nResultados da pesquisa:\n{texto_pesquisa}"
-                    fut = pool.submit(agente_format.run, prompt_format)
-                    try:
-                        resposta_format = fut.result(timeout=120)
-                    except concurrent.futures.TimeoutError:
-                        logger.warning("Formata\u00e7\u00e3o timeout (tentativa %d)", tentativa+1)
-                        tentativas_log.append({'tentativa': tentativa+1, 'status': 'timeout', 'tempo_seg': round(time_module.time()-inicio_tentativa,2), 'fase': 'formata\u00e7\u00e3o'})
-                        continue
+                prompt_format = f"{contexto_personalizado}\n\nResultados da pesquisa:\n{texto_pesquisa}"
+                fut = self._executor.submit(agente_format.run, prompt_format)
+                try:
+                    resposta_format = fut.result(timeout=120)
+                except concurrent.futures.TimeoutError:
+                    logger.warning("Formata\u00e7\u00e3o timeout (tentativa %d)", tentativa+1)
+                    fut.cancel()
+                    tentativas_log.append({'tentativa': tentativa+1, 'status': 'timeout', 'tempo_seg': round(time_module.time()-inicio_tentativa,2), 'fase': 'formata\u00e7\u00e3o'})
+                    continue
 
                 conteudo = resposta_format.content
                 if conteudo is None:

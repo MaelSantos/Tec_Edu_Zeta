@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from api.schemas.chat_schema import ChatRequestPersonalizado
 from api.services.chat_service import chat_service
+from starlette.concurrency import run_in_threadpool
 
 router = APIRouter(
     prefix="/api/chat",
@@ -10,7 +11,8 @@ router = APIRouter(
 
 @router.post("/play")
 async def chat_personalizado_endpoint(request: ChatRequestPersonalizado):
-    resultado = chat_service.gerar_resposta_chat(
+    resultado = await run_in_threadpool(
+        chat_service.gerar_resposta_chat,
         message=request.message,
         interesses_list=request.interesses_list,
         apelido=request.apelido,
